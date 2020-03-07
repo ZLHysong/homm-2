@@ -23,7 +23,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <button class="btn btn-primary" onclick="attack(red1, green1);">Attack</button>
+                <button class="btn btn-primary" onclick="attack(player);">Attack</button>
                 <button class="btn btn-primary" onclick="changePlayer();">Change Player</button>
             </div>
         </div>
@@ -70,16 +70,19 @@
         let green1 = createChar("green", 9, 9);
         let player = green1;
 
-        function attack(char1, char2) {
+        function attack(player) {
+            (player == red1) ? char2 = green1 : char2 = red1;
+
             let baseDamage = 0;
 
-            for (let i = 0; i < char1['stack']; i++) {
-                baseDamage += randomIntFromInterval(char1['damageLow'], char1['damageHigh']);
+            for (let i = 0; i < player['stack']; i++) {
+                baseDamage += randomIntFromInterval(player['damageLow'], player['damageHigh']);
             }
             
-            bonusDamage = (((char1['attack'] - char2['defense']) * 10) / 100) * baseDamage;
+            bonusDamage = (((player['attack'] - char2['defense']) * 10) / 100) * baseDamage;
             totalDamage = Math.floor(baseDamage + bonusDamage);
 
+            console.log(player['type'] + ' is attacking ' + char2['type']);
             console.log("Base Damage: " + baseDamage);
             console.log("Bonus Damage: " + bonusDamage);
             console.log("Total Damage: " + totalDamage);
