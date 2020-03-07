@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Requigreen meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+      <div class="container">
+        <div class="row">
+            <div class="col">
+                <canvas id="myCanvas" width="320" height="320"
+                style="border:1px solid #c3c3c3;">
+                Your browser does not support the canvas element.
+                </canvas>
+                <p>Player: <span id="currentPlayer"></span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary" onclick="attack(red1, green1);">Attack</button>
+                <button class="btn btn-primary" onclick="changePlayer();">Change Player</button>
+            </div>
+        </div>
+      </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script>
+        let spriteSize = 32;
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+        let charData = {
+            'red': { attack: 6, defense: 1, health: 4, damageLow: 1, damageHigh: 2, stack: 10, movement: 3 },
+            'green': { attack: 2, defense: 1, health: 1, damageLow: 1, damageHigh: 3, stack:10, movement: 5 }
+        }
+
+        function randomIntFromInterval(min, max) { // min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        function Char(type) {
+            this.type = type;
+        }
+
+        function createChar(type, x, y) {
+            let char = new Char(type);
+            char.x = x;
+            char.y = y;
+            char.attack = charData[char.type].attack;
+            char.defense = charData[char.type].defense;
+            char.health = charData[char.type].health;
+            char.damageLow = charData[char.type].damageLow;
+            char.damageHigh = charData[char.type].damageHigh;
+            char.stack = charData[char.type].stack;
+            char.movement = charData[char.type].movement;
+            return char;
+        }
+
+        let red1 = createChar("red", 0, 0);
+        let green1 = createChar("green", 9, 9);
+        let player = green1;
+
+        function attack(char1, char2) {
+            let baseDamage = 0;
+
+            for (let i = 0; i < char1['stack']; i++) {
+                baseDamage += randomIntFromInterval(char1['damageLow'], char1['damageHigh']);
+            }
+            
+            bonusDamage = (((char1['attack'] - char2['defense']) * 10) / 100) * baseDamage;
+            totalDamage = Math.floor(baseDamage + bonusDamage);
+
+            console.log("Base Damage: " + baseDamage);
+            console.log("Bonus Damage: " + bonusDamage);
+            console.log("Total Damage: " + totalDamage);
+        }
+
+        function drawSprites() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSprite(red1['x'], red1['y'], "#d60000");
+            drawSprite(green1['x'], green1['y'], "#00d600");
+        }
+        
+        function drawSprite(x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * spriteSize,y * spriteSize,spriteSize,spriteSize);
+        }
+
+        function move(char, dir) {
+            if (char['movement'] > 0) {
+                switch (dir) {
+                    case "up":
+                        if (char['y'] !== 0) {
+                            char['y']--;
+                            char['movement']--;
+                        }
+                        break;
+                    case "down":
+                        if (char['y'] !== 9) {
+                            char['y']++;
+                            char['movement']--;
+                        }
+                        break;
+                    case "left":
+                        if (char['x'] !== 0) {
+                            char['x']--;
+                            char['movement']--;
+                        }
+                        break;
+                    case "right":
+                        if (char['x'] !== 9) {
+                            char['x']++;
+                            char['movement']--;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                displayCurrentPlayer(player);
+                console.log("Movement left: " + char['movement']);
+                drawSprites();
+            } else {
+                console.log("Out of movement.");
+            }
+        }
+
+        document.onkeydown = function(event) {
+            switch (event.keyCode) {
+            case 37:
+                move(player, "left");
+                break;
+            case 38:
+                move(player, "up");
+                break;
+            case 39:
+                move(player, "right");
+                break;
+            case 40:
+                move(player, "down");
+                break;
+            }
+        };
+
+        function changePlayer() {
+            if (player == green1) {
+                player = red1;
+            } else {
+                player = green1;
+            }
+            displayCurrentPlayer(player);
+        }
+
+        function displayCurrentPlayer(player) {
+            $('#currentPlayer').text(player['type'] + " [" + player['movement'] + "]");
+        }
+
+        displayCurrentPlayer(player);
+        changePlayer();
+        drawSprites();
+                
+        console.log(red1);
+        console.log(green1);
+    </script>
+
+  </body>
+</html>
