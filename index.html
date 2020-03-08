@@ -180,11 +180,15 @@
             console.log("Player " + player.name + " starting turn.");
         }
 
-        displayCurrentPlayer(player);
-        drawSprites();
-                
-        console.log(red1);
-        console.log(green1);
+        function initGame() {
+            displayCurrentPlayer(player);
+            drawSprites();
+                    
+            console.log(red1);
+            console.log(green1);
+        }
+
+        initGame();
     </script>
 
   </body>
