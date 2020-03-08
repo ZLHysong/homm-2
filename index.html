@@ -13,12 +13,28 @@
     <title>Hello, world!</title>
 
     <style>
+        body {
+            background-image: url('assets/images/bg.png');
+        }
         canvas {
             padding-left: 0;
             padding-right: 0;
             margin-left: auto;
             margin-right: auto;
             display: block;
+        } 
+        .playerStatsDiv {
+            border: 10px solid transparent;
+            border-image: url('assets/images/tableborder.png') 30 round;
+            padding: 0px;
+            width: 100%;
+            color: white;
+            text-shadow: black 1px 1px;
+        }
+        .playerStats{
+            background: url('assets/images/leather.jpg') 100% 100%;
+            width: 100%;
+            padding: 10px;
         }
     </style>
 </head>
@@ -30,10 +46,82 @@
                 <canvas id="myCanvas" width="320" height="320" style="border:1px solid #c3c3c3;">
                     Your browser does not support the canvas element.
                 </canvas>
-                <p>Player: <span id="currentPlayer"></span></p>
             </div>
         </div>
-        <div class="row">
+        <div class="row pt-3">
+            <div class="col-12">                
+                <div class="playerStatsDiv">
+                    <div class="playerStats text-center">
+                        Current Player: <span id="currentPlayer"></span>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-6">
+                <div class="playerStatsDiv">
+                    <div class="playerStats">
+                        <table class="playerStats">
+                            <tr>
+                                <th colspan="2" class="text-center"><span id="player1Name"></span></th>
+                            </tr>
+                            <tr>
+                                <td>Attack</td>
+                                <td><span id="player1attack"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Defense</td>
+                                <td><span id="player1defense"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Damage</td>
+                                <td><span id="player1damageLow"></span> - <span id="player1damageHigh"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Health</td>
+                                <td><span id="player1health"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Movement</td>
+                                <td><span id="player1movement"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="playerStatsDiv">
+                    <div class="playerStats">
+                        <table class="playerStats">
+                            <tr>
+                                <th colspan="2" class="text-center"><span id="player2Name"></span></th>
+                            </tr>
+                            <tr>
+                                <td>Attack</td>
+                                <td><span id="player2attack"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Defense</td>
+                                <td><span id="player2defense"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Damage</td>
+                                <td><span id="player2damageLow"></span> - <span id="player2damageHigh"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Health</td>
+                                <td><span id="player2health"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Movement</td>
+                                <td><span id="player2movement"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
             <div class="col-6">
                 <div class="row">
                     <div class="col-12">
@@ -43,281 +131,325 @@
                 </div>
                 <div class="row pt-1">
                     <div class="col-12">
-                        <button class="btn btn-primary btn-block" onclick="endTurn();">Change Player</button>
+                        <button class="btn btn-warning btn-block" onclick="endTurn();">Change Player</button>
+                    </div>
+                </div>
+                <div class="row pt-1">
+                    <div class="col-12">
+                        <button class="btn btn-success btn-block" onclick="toggleGrid();">Toggle Grid</button>
                     </div>
                 </div>
             </div>
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-12">
-                            <button class="btn btn-danger btn-block" onclick="attack(player, 'up');">Up</button>
-                        </div>
-                    </div>
-                    <div class="row pt-1">
-                        <div class="col-6">
-                            <button class="btn btn-danger btn-block" onclick="attack(player, 'left');">Left</button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-danger btn-block" onclick="attack(player, 'right');">Right</button>
-                        </div>
-                    </div>
-                    <div class="row pt-1">
-                        <div class="col-12">
-                            <button class="btn btn-danger btn-block" onclick="attack(player, 'down');">Down</button>
-                        </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block" onclick="attack(player, 'up');">Up</button>
                     </div>
                 </div>
-            </div>
-            <div class="row d-none">
-                <div class="col">
-                    <img id="green" src="assets/images/1.png" alt="">
-                    <img id="red" src="assets/images/2.png" alt="">
+                <div class="row pt-1">
+                    <div class="col-6">
+                        <button class="btn btn-danger btn-block" onclick="attack(player, 'left');">Left</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-danger btn-block" onclick="attack(player, 'right');">Right</button>
+                    </div>
+                </div>
+                <div class="row pt-1">
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block" onclick="attack(player, 'down');">Down</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row d-none">
+            <div class="col">
+                <img id="green" src="assets/images/green.png" alt="">
+                <img id="red" src="assets/images/red.png" alt="">
+                <img id="battleMap" src="assets/images/battleMap.png" alt="">
+            </div>
+        </div>
+    </div>
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-        </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
 
-        <script>
-            let spriteSize = 32;
-            let canvas = document.getElementById("myCanvas");
-            let ctx = canvas.getContext("2d");
-            let charData = {
-                'red': {
-                    attack: 6,
-                    defense: 1,
-                    health: 4,
-                    damageLow: 1,
-                    damageHigh: 2,
-                    stack: 10,
-                    movement: 3
-                },
-                'green': {
-                    attack: 2,
-                    defense: 1,
-                    health: 1,
-                    damageLow: 1,
-                    damageHigh: 3,
-                    stack: 10,
-                    movement: 5
+    <script>
+        let spriteSize = 32;
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+        let charData = {
+            'red': {
+                attack: 6,
+                defense: 1,
+                health: 4,
+                damageLow: 1,
+                damageHigh: 2,
+                stack: 10,
+                movement: 3
+            },
+            'green': {
+                attack: 2,
+                defense: 1,
+                health: 1,
+                damageLow: 1,
+                damageHigh: 3,
+                stack: 10,
+                movement: 5
+            }
+        }
+
+        function randomIntFromInterval(min, max) { // min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        function Char(type) {
+            this.type = type;
+        }
+
+        function createChar(type, x, y) {
+            let char = new Char(type);
+            char.x = x;
+            char.y = y;
+            char.attack = charData[char.type].attack;
+            char.defense = charData[char.type].defense;
+            char.health = charData[char.type].health;
+            char.damageLow = charData[char.type].damageLow;
+            char.damageHigh = charData[char.type].damageHigh;
+            char.stack = charData[char.type].stack;
+            char.movement = charData[char.type].movement;
+            return char;
+        }
+
+        let red1 = createChar("red", 0, 0);
+        red1.name = "red";
+        let green1 = createChar("green", 9, 9);
+        green1.name = "green";
+        let players = [red1, green1];
+        let player = players[0];
+
+        function getAttackValues(player) {
+            (player == red1) ? char2 = green1: char2 = red1;
+
+            let baseDamage = 0;
+
+            for (let i = 0; i < player['stack']; i++) {
+                baseDamage += randomIntFromInterval(player['damageLow'], player['damageHigh']);
+            }
+
+            bonusDamage = (((player['attack'] - char2['defense']) * 10) / 100) * baseDamage;
+            totalDamage = Math.floor(baseDamage + bonusDamage);
+
+            console.log(player['type'] + ' is attacking ' + char2['type']);
+            console.log("Base Damage: " + baseDamage);
+            console.log("Bonus Damage: " + bonusDamage);
+            console.log("Total Damage: " + totalDamage);
+        }
+
+        function attack(player, dir) {
+            // get x, y of players attack direction
+            let attackCoords;
+            switch (dir) {
+                case "up":
+                    attackCoords = [player['x'], player['y'] - 1];
+                    break;
+                case "down":
+                    attackCoords = [player['x'], player['y'] + 1];
+                    break;
+                case "left":
+                    attackCoords = [player['x'] - 1, player['y']];
+                    break;
+                case "right":
+                    attackCoords = [player['x'] + 1, player['y']];
+                    break;
+                default:
+                    console.log("No Direction Given");
+                    break;
+            }
+            console.log("Attacking: " + attackCoords);
+            // check if attacking out of bounds
+            if (attackCoords[0] < 0 || attackCoords[0] > 9 || attackCoords[1] < 0 || attackCoords[1] > 9) {
+                console.log("Attack is off map. Try again.");
+            } else {
+                for (let i = 0; i < players.length; i++) {
+                    let playerCoords = [players[i].x, players[i].y];
+                    console.log(playerCoords);
+                    if (arraysMatch(playerCoords, attackCoords)) {
+                        console.log(players[i].name + " Hit!");
+
+                    } else {
+                        console.log("Miss!");
+                    }
+                    // console.log("Player " + players[i].name + " exists at: {" + players[i].x + ", " + players[i].y + "}");
                 }
             }
+        }
 
-            function randomIntFromInterval(min, max) { // min and max included 
-                return Math.floor(Math.random() * (max - min + 1) + min);
+        var arraysMatch = function (arr1, arr2) {
+
+            // Check if the arrays are the same length
+            if (arr1.length !== arr2.length) return false;
+
+            // Check if all items exist and are in the same order
+            for (var i = 0; i < arr1.length; i++) {
+                if (arr1[i] !== arr2[i]) return false;
             }
 
-            function Char(type) {
-                this.type = type;
+            // Otherwise, return true
+            return true;
+
+        };
+
+        var grid = 1;
+
+        function drawSprites() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var redSprite = document.getElementById('red');
+            var battleMap = document.getElementById('battleMap');
+            var greenSprite = document.getElementById('green');
+            // drawSprite(red1['x'], red1['y'], "#d60000");
+            drawSprite(battleMap, 0, 0);
+            drawSprite(redSprite, red1['x'], red1['y']);
+            drawSprite(greenSprite, green1['x'], green1['y']);
+            // drawSprite(green1['x'], green1['y'], "#00d600");
+            if (grid) {
+                drawGrid();
             }
+        }
 
-            function createChar(type, x, y) {
-                let char = new Char(type);
-                char.x = x;
-                char.y = y;
-                char.attack = charData[char.type].attack;
-                char.defense = charData[char.type].defense;
-                char.health = charData[char.type].health;
-                char.damageLow = charData[char.type].damageLow;
-                char.damageHigh = charData[char.type].damageHigh;
-                char.stack = charData[char.type].stack;
-                char.movement = charData[char.type].movement;
-                return char;
+        function drawGrid() {
+            for (let i = 0; i <= 320; i+=32) {
+                    console.log("drawing grid lines at coords:" + i);
+                    ctx.strokeStyle = "#698E04";
+                    ctx.beginPath();
+                    ctx.moveTo(0, i);
+                    ctx.lineTo(320, i);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i,320);
+                    ctx.stroke();
             }
+        }
 
-            let red1 = createChar("red", 0, 0);
-            red1.name = "red";
-            let green1 = createChar("green", 9, 9);
-            green1.name = "green";
-            let players = [red1, green1];
-            let player = players[0];
+        function toggleGrid() {
+            grid ? grid = 0 : grid = 1;
+            drawSprites();
+        }
 
-            function getAttackValues(player) {
-                (player == red1) ? char2 = green1: char2 = red1;
+        function drawSprite(image, x, y) {
+            // ctx.fillStyle = color;
+            // ctx.fillRect(x * spriteSize,y * spriteSize,spriteSize,spriteSize);
+            ctx.drawImage(image, x * spriteSize, y * spriteSize);
+        }
 
-                let baseDamage = 0;
-
-                for (let i = 0; i < player['stack']; i++) {
-                    baseDamage += randomIntFromInterval(player['damageLow'], player['damageHigh']);
-                }
-
-                bonusDamage = (((player['attack'] - char2['defense']) * 10) / 100) * baseDamage;
-                totalDamage = Math.floor(baseDamage + bonusDamage);
-
-                console.log(player['type'] + ' is attacking ' + char2['type']);
-                console.log("Base Damage: " + baseDamage);
-                console.log("Bonus Damage: " + bonusDamage);
-                console.log("Total Damage: " + totalDamage);
-            }
-
-            function attack(player, dir) {
-                // get x, y of players attack direction
-                let attackCoords;
+        function move(char, dir) {
+            if (char['movement'] > 0) {
                 switch (dir) {
                     case "up":
-                        attackCoords = [player['x'], player['y'] - 1];
+                        if (char['y'] !== 0) {
+                            char['y']--;
+                            char['movement']--;
+                        }
                         break;
                     case "down":
-                        attackCoords = [player['x'], player['y'] + 1];
+                        if (char['y'] !== 9) {
+                            char['y']++;
+                            char['movement']--;
+                        }
                         break;
                     case "left":
-                        attackCoords = [player['x'] - 1, player['y']];
+                        if (char['x'] !== 0) {
+                            char['x']--;
+                            char['movement']--;
+                        }
                         break;
                     case "right":
-                        attackCoords = [player['x'] + 1, player['y']];
+                        if (char['x'] !== 9) {
+                            char['x']++;
+                            char['movement']--;
+                        }
                         break;
                     default:
-                        console.log("No Direction Given");
                         break;
                 }
-                console.log("Attacking: " + attackCoords);
-                // check if attacking out of bounds
-                if (attackCoords[0] < 0 || attackCoords[0] > 9 || attackCoords[1] < 0 || attackCoords[1] > 9) {
-                    console.log("Attack is off map. Try again.");
-                } else {
-                    for (let i = 0; i < players.length; i++) {
-                        let playerCoords = [players[i].x, players[i].y];
-                        console.log(playerCoords);
-                        if (arraysMatch(playerCoords, attackCoords)) {
-                            console.log(players[i].name + " Hit!");
-
-                        } else {
-                            console.log("Miss!");
-                        }
-                        // console.log("Player " + players[i].name + " exists at: {" + players[i].x + ", " + players[i].y + "}");
-                    }
-                }
-            }
-
-            var arraysMatch = function (arr1, arr2) {
-
-                // Check if the arrays are the same length
-                if (arr1.length !== arr2.length) return false;
-
-                // Check if all items exist and are in the same order
-                for (var i = 0; i < arr1.length; i++) {
-                    if (arr1[i] !== arr2[i]) return false;
-                }
-
-                // Otherwise, return true
-                return true;
-
-            };
-
-            function drawSprites() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                var redSprite = document.getElementById('red');
-                var greenSprite = document.getElementById('green');
-                // drawSprite(red1['x'], red1['y'], "#d60000");
-                drawSprite(redSprite, red1['x'], red1['y']);
-                drawSprite(greenSprite, green1['x'], green1['y']);
-                // drawSprite(green1['x'], green1['y'], "#00d600");
-            }
-
-            function drawSprite(image, x, y) {
-                // ctx.fillStyle = color;
-                // ctx.fillRect(x * spriteSize,y * spriteSize,spriteSize,spriteSize);
-                ctx.drawImage(image, x * spriteSize, y * spriteSize);
-            }
-
-            function move(char, dir) {
-                if (char['movement'] > 0) {
-                    switch (dir) {
-                        case "up":
-                            if (char['y'] !== 0) {
-                                char['y']--;
-                                char['movement']--;
-                            }
-                            break;
-                        case "down":
-                            if (char['y'] !== 9) {
-                                char['y']++;
-                                char['movement']--;
-                            }
-                            break;
-                        case "left":
-                            if (char['x'] !== 0) {
-                                char['x']--;
-                                char['movement']--;
-                            }
-                            break;
-                        case "right":
-                            if (char['x'] !== 9) {
-                                char['x']++;
-                                char['movement']--;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    displayCurrentPlayer(player);
-                    console.log("Movement left: " + char['movement']);
-                    drawSprites();
-                } else {
-                    console.log("Out of movement.");
-                }
-            }
-
-            document.onkeydown = function (event) {
-                switch (event.keyCode) {
-                    case 37:
-                        move(player, "left");
-                        break;
-                    case 38:
-                        move(player, "up");
-                        break;
-                    case 39:
-                        move(player, "right");
-                        break;
-                    case 40:
-                        move(player, "down");
-                        break;
-                }
-            };
-
-            function displayCurrentPlayer(player) {
-                $('#currentPlayer').text(player.name + " [" + player['movement'] + "]");
-            }
-
-            function endTurn() {
-                console.log("Player " + player.name + " ending turn.");
-                console.log("Next Player: TBD");
-                console.log(player);
-                if (player == players[0]) {
-                    player = players[1];
-                } else {
-                    player = players[0];
-                }
-                console.log(player);
-                startTurn(player);
-            }
-
-            function startTurn(player) {
-                player.movement = charData[player.name].movement;
-                displayCurrentPlayer(player);
-                console.log("Player " + player.name + " starting turn.");
-            }
-
-            function initGame() {
-                displayCurrentPlayer(player);
+                updatePlayerStats();
+                console.log("Movement left: " + char['movement']);
                 drawSprites();
-
-                console.log(red1);
-                console.log(green1);
+            } else {
+                console.log("Out of movement.");
             }
+        }
 
-            initGame();
-        </script>
+        document.onkeydown = function (event) {
+            switch (event.keyCode) {
+                case 37:
+                    move(player, "left");
+                    break;
+                case 38:
+                    move(player, "up");
+                    break;
+                case 39:
+                    move(player, "right");
+                    break;
+                case 40:
+                    move(player, "down");
+                    break;
+            }
+        };
+
+        function updatePlayerStats() {
+            $('#currentPlayer').text(player.name + " [" + player['movement'] + "]");
+            
+            for (let i = 0; i < players.length; i++) {
+                playerNum = i + 1;
+                $('#player' + playerNum + 'Name').text(players[i].name);
+                $('#player' + playerNum + 'attack').text(players[i].attack);
+                $('#player' + playerNum + 'damageHigh').text(players[i].damageHigh);
+                $('#player' + playerNum + 'damageLow').text(players[i].damageLow);
+                $('#player' + playerNum + 'defense').text(players[i].defense);
+                $('#player' + playerNum + 'health').text(players[i].health);
+                $('#player' + playerNum + 'movement').text(players[i].movement);
+            }
+        }
+
+        function endTurn() {
+            console.log("Player " + player.name + " ending turn.");
+            console.log("Next Player: TBD");
+            console.log(player);
+            if (player == players[0]) {
+                player = players[1];
+            } else {
+                player = players[0];
+            }
+            console.log(player);
+            startTurn(player);
+        }
+
+        function startTurn(player) {
+            player.movement = charData[player.name].movement;
+            updatePlayerStats();
+            console.log("Player " + player.name + " starting turn.");
+        }
+
+        function initGame() {
+            updatePlayerStats();
+            drawSprites();
+
+            console.log(red1);
+            console.log(green1);
+        }
+
+        initGame();
+    </script>
 
 </body>
 
