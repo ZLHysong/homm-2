@@ -27,6 +27,12 @@
                 <button class="btn btn-primary" onclick="endTurn();">Change Player</button>
             </div>
         </div>
+        <div class="row d-none">
+            <div class="col">
+                <img id="green" src="assets/images/1.png" alt="">
+                <img id="red" src="assets/images/2.png" alt="">
+            </div>
+        </div>
       </div>
 
     <!-- Optional JavaScript -->
@@ -93,13 +99,18 @@
 
         function drawSprites() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawSprite(red1['x'], red1['y'], "#d60000");
-            drawSprite(green1['x'], green1['y'], "#00d600");
+            var redSprite = document.getElementById('red');
+            var greenSprite = document.getElementById('green');
+            // drawSprite(red1['x'], red1['y'], "#d60000");
+            drawSprite(redSprite, red1['x'], red1['y']);
+            drawSprite(greenSprite, green1['x'], green1['y']);
+            // drawSprite(green1['x'], green1['y'], "#00d600");
         }
         
-        function drawSprite(x, y, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(x * spriteSize,y * spriteSize,spriteSize,spriteSize);
+        function drawSprite(image, x, y) {
+            // ctx.fillStyle = color;
+            // ctx.fillRect(x * spriteSize,y * spriteSize,spriteSize,spriteSize);
+            ctx.drawImage(image, x * spriteSize, y * spriteSize);
         }
 
         function move(char, dir) {
