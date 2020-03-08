@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col">
                 <button class="btn btn-primary" onclick="attack(player);">Attack</button>
-                <button class="btn btn-primary" onclick="changePlayer();">Change Player</button>
+                <button class="btn btn-primary" onclick="endTurn();">Change Player</button>
             </div>
         </div>
       </div>
@@ -67,8 +67,11 @@
         }
 
         let red1 = createChar("red", 0, 0);
+        red1.name = "red";
         let green1 = createChar("green", 9, 9);
-        let player = green1;
+        green1.name = "green";
+        let players = [red1, green1];
+        let player = players[0];
 
         function attack(player) {
             (player == red1) ? char2 = green1 : char2 = red1;
@@ -160,15 +163,32 @@
             } else {
                 player = green1;
             }
-            displayCurrentPlayer(player);
         }
 
         function displayCurrentPlayer(player) {
-            $('#currentPlayer').text(player['type'] + " [" + player['movement'] + "]");
+            $('#currentPlayer').text(player.name + " [" + player['movement'] + "]");
+        }
+
+        function endTurn() {
+            console.log("Player " + player.name + " ending turn.");
+            console.log("Next Player: TBD");
+            console.log(player);
+            if (player == players[0]) {
+                player = players[1];
+            } else {
+                player = players[0];
+            }
+            console.log(player);
+            startTurn(player);
+        }
+
+        function startTurn(player) {
+            player.movement = charData[player.name].movement;
+            displayCurrentPlayer(player);
+            console.log("Player " + player.name + " starting turn.");
         }
 
         displayCurrentPlayer(player);
-        changePlayer();
         drawSprites();
                 
         console.log(red1);
