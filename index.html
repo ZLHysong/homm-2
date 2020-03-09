@@ -166,6 +166,8 @@
                 <img id="green" src="assets/images/green.png" alt="">
                 <img id="red" src="assets/images/red.png" alt="">
                 <img id="battleMap" src="assets/images/battleMap.png" alt="">
+                <img id="griffin" src="assets/images/1.png" alt="">
+                <img id="rogue" src="assets/images/2.png" alt="">
             </div>
         </div>
     </div>
@@ -204,6 +206,24 @@
                 damageHigh: 3,
                 stack: 10,
                 movement: 5
+            },
+            'griffin': {
+                attack: 2,
+                defense: 1,
+                health: 1,
+                damageLow: 1,
+                damageHigh: 3,
+                stack: 10,
+                movement: 5
+            },
+            'rogue': {
+                attack: 2,
+                defense: 1,
+                health: 1,
+                damageLow: 1,
+                damageHigh: 3,
+                stack: 10,
+                movement: 5
             }
         }
 
@@ -229,12 +249,23 @@
             return char;
         }
 
+        function createPlayer() {
+
+        }
+
         let red1 = createChar("red", 0, 0);
         red1.name = "red";
         let green1 = createChar("green", 9, 9);
         green1.name = "green";
         let players = [red1, green1];
         let player = players[0];
+
+        let player1 = {"units": []}
+        let player2 = {"units": []}
+        player1.units.push(createChar('red'));
+        player1.units.push(createChar('griffin'));
+        player1.units.push(createChar('rogue'));
+        player2.units.push(createChar('green'));
 
         function getAttackValues(player) {
             (player == red1) ? char2 = green1: char2 = red1;
@@ -308,17 +339,29 @@
 
         };
 
-        var grid = 1;
+        let grid = 1;
 
         function drawSprites() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            var redSprite = document.getElementById('red');
-            var battleMap = document.getElementById('battleMap');
-            var greenSprite = document.getElementById('green');
+            let redSprite = document.getElementById('red');
+            let battleMap = document.getElementById('battleMap');
+            let greenSprite = document.getElementById('green');
             // drawSprite(red1['x'], red1['y'], "#d60000");
             drawSprite(battleMap, 0, 0);
             drawSprite(redSprite, red1['x'], red1['y']);
             drawSprite(greenSprite, green1['x'], green1['y']);
+            let plx = 0;
+            let ply = 1;
+            // player 1
+            for (let i = 0; i < player1.units.length; i++) {
+                let unit = player1.units[i];
+                let unitSprite = document.getElementById(unit['type']);
+                unit['x'] = plx;
+                unit['y'] = ply;
+                ply++;
+                console.log(unitSprite);
+                drawSprite(unitSprite, unit['x'], unit['y']);
+            }
             // drawSprite(green1['x'], green1['y'], "#00d600");
             if (grid) {
                 drawGrid();
@@ -327,7 +370,7 @@
 
         function drawGrid() {
             for (let i = 0; i <= 320; i+=32) {
-                    console.log("drawing grid lines at coords:" + i);
+                    // console.log("drawing grid lines at coords:" + i);
                     ctx.strokeStyle = "#698E04";
                     ctx.beginPath();
                     ctx.moveTo(0, i);
@@ -409,17 +452,25 @@
         function updatePlayerStats() {
             $('#currentPlayer').text(player.name + " [" + player['movement'] + "]");
             
-            for (let i = 0; i < players.length; i++) {
-                playerNum = i + 1;
-                $('#player' + playerNum + 'Name').text(players[i].name);
-                $('#player' + playerNum + 'attack').text(players[i].attack);
-                $('#player' + playerNum + 'damageHigh').text(players[i].damageHigh);
-                $('#player' + playerNum + 'damageLow').text(players[i].damageLow);
-                $('#player' + playerNum + 'defense').text(players[i].defense);
-                $('#player' + playerNum + 'health').text(players[i].health);
-                $('#player' + playerNum + 'movement').text(players[i].movement);
-            }
+
+            // for (let i = 0; i < players.length; i++) {
+            //     playerNum = i + 1;
+            //     $('#player' + playerNum + 'Name').text(players[i].name);
+            //     $('#player' + playerNum + 'attack').text(players[i].attack);
+            //     $('#player' + playerNum + 'damageHigh').text(players[i].damageHigh);
+            //     $('#player' + playerNum + 'damageLow').text(players[i].damageLow);
+            //     $('#player' + playerNum + 'defense').text(players[i].defense);
+            //     $('#player' + playerNum + 'health').text(players[i].health);
+            //     $('#player' + playerNum + 'movement').text(players[i].movement);
+            // }
         }
+
+        function setInitialPositions() {
+            // player1
+            for (let i = 0; i < player1.units.length; i++) {
+                const element = player1.units[i];
+            }
+        };
 
         function endTurn() {
             console.log("Player " + player.name + " ending turn.");
@@ -430,7 +481,7 @@
             } else {
                 player = players[0];
             }
-            console.log(player);
+            // console.log(player);
             startTurn(player);
         }
 
@@ -444,8 +495,8 @@
             updatePlayerStats();
             drawSprites();
 
-            console.log(red1);
-            console.log(green1);
+            // console.log(red1);
+            // console.log(green1);
         }
 
         initGame();
